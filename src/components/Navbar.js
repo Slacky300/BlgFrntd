@@ -1,7 +1,10 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-
+import { useContext } from 'react'
+import AuthContext from '../context/AuthContext'
 export const Navbar = () => {
+
+    let {user,logout} = useContext(AuthContext)
     return (
         <>
             <nav className="navbar navbar-expand-lg bg-body-tertiary" data-bs-theme = "dark">
@@ -12,18 +15,31 @@ export const Navbar = () => {
                     </button>
                     <div className="collapse navbar-collapse" id="navbarNav">
                         <ul className="navbar-nav ms-auto" >
-                            <li className="nav-item">
+                        <li className="nav-item">
                                 <Link className="nav-link active" aria-current="page" to="/">Home</Link>
                             </li>
-                            <li className="nav-item">
-                                <Link className="nav-link" to="/login">Login</Link>
-                            </li>
-                            <li className="nav-item">
-                                <Link className="nav-link" to="/about">About us</Link>
-                            </li>
-                            <li className="nav-item">
-                                <Link className="nav-link" to="/contact">Contact us</Link>
-                            </li>
+                            {!user ? (
+                                <li className="nav-item">
+                                    <Link className="nav-link" to="/login">Login</Link>
+                                </li>
+                                
+                            ):(
+                                <>
+                                    <li className="nav-item">
+                                        <Link className="nav-link" to="/about">About us</Link>
+                                    </li>
+                                    <li className="nav-item">
+                                        <Link className="nav-link" to="/contact">Contact us</Link>
+                                    </li>
+                                    <li className='nav-item'>
+                                        <Link className='nav-link' onClick={logout}>Logout</Link>
+                                    </li>
+                                </>
+                            )}
+                            
+
+                            
+                           
                         </ul>
                     </div>
                 </div>

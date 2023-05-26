@@ -10,7 +10,7 @@ const Home = () => {
         <>
             <header><Navbar /></header>
             <div className='container mt-5'>
-                {user && <h1>Hello {user.user_id}</h1>}
+                {user && <h1>Hello {user.name}</h1>}
                 <Outlet />
             </div>
         </>
