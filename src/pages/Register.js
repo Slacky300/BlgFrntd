@@ -1,5 +1,7 @@
 import React, { useState, useContext } from 'react'
-import AuthContext from '../context/AuthContext'
+import AuthContext from '../context/AuthContext';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 export const Register = () => {
 
     let { loading, registerUser } = useContext(AuthContext);
@@ -79,8 +81,27 @@ export const Register = () => {
                     </>
                 ) :
                 (
-                    <h2>Loading</h2>
+                    <>
+                        <div className="text-center">
+                            <div className="spinner-border" role="status">
+                                <span className="visually-hidden">Loading...</span>
+                            </div>
+                        </div>
+                    </>
                 )}
+
+            <ToastContainer
+                position="top-right"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="light"
+            />
 
 
 

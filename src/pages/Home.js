@@ -1,18 +1,38 @@
 import React from 'react'
-import { useContext } from 'react';
+
 import { Outlet } from 'react-router-dom';
 import { Navbar } from '../components/Navbar';
-import AuthContext from '../context/AuthContext';
+
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 const Home = () => {
-    let {user} = useContext(AuthContext);
+   
 
     return (
         <>
             <header><Navbar /></header>
-            <div className='container mt-5'>
-                {user && <h1>Hello {user.name}</h1>}
+           
                 <Outlet />
-            </div>
+
+            
+                
+                        
+              
+     
+       
+
+            <ToastContainer
+                position="top-right"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="light"
+            />
         </>
     )
 }

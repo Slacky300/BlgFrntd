@@ -1,13 +1,21 @@
 import React, { useContext } from 'react'
 import AuthContext from '../context/AuthContext'
 import { Navigate } from "react-router-dom";
-import './login.css'
+import './login.css';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+
+
+
 const Login = () => {
 
     let { loginUser, user, loading } = useContext(AuthContext)
     if (user) {
         return <Navigate replace to="/" />
     }
+
+
     return (
         <>
             {!loading ? (
@@ -27,16 +35,30 @@ const Login = () => {
                     </div>
                 </>
             ) : (
-                <div className='container'>
-                    <div className='row d-flex justify-content-center align-items-center my-5'>
-                        <div className='loader my-5'></div>
+                <>
+                    <div className="text-center">
+                        <div className="spinner-border" role="status">
+                            <span className="visually-hidden">Loading...</span>
+                        </div>
                     </div>
-                </div>
-               
-                
-            )}
+                </>
 
+
+            )}
+            <ToastContainer
+                position="top-right"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="light"
+            />
         </>
+
     )
 }
 

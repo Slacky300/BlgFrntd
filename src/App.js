@@ -4,13 +4,20 @@ import Login from './pages/Login';
 import Home from './pages/Home';
 import { AuthProvider } from './context/AuthContext';
 import { Register } from './pages/Register';
+import Validate from './pages/Validate';
+import Rhome from './pages/Rhome';
+import Blog from './pages/Blog';
+
 function App() {
 
   const router = createBrowserRouter([
     { path: '/', element: <Home /> , 
       children: [
+        { path: '/', element: <Rhome/>},
         { path: '/login', element: <Login /> },
-        { path: '/register', element: <Register/> }
+        { path: '/register', element: <Register/> },
+        { path: '/activate/:uid/:token/', element: <Validate/> },
+        { path: '/posts', element: <Blog/> },
       ]
     },
     
@@ -20,6 +27,7 @@ function App() {
     <>
       <div className='App'>
         <AuthProvider>
+
           <RouterProvider router={router} />
         </AuthProvider>
       </div>

@@ -1,7 +1,11 @@
 import { createContext, useState, useEffect } from "react";
 import jwt_decode from 'jwt-decode';
 import { Navigate } from "react-router-dom";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+// import axios from 'axios';
 const AuthContext = createContext();
+
 
 export default AuthContext;
 
@@ -16,6 +20,9 @@ export const AuthProvider = ({ children }) => {
         }
     }
 
+    let serverUrl = "https://eventmanagementsystem.pythonanywhere.com";
+    // let serverUrl = "http://127.0.0.1:8000";
+
     let getUser = () => {
         const token = localStorage.getItem('authTokens');
         if (token) {
@@ -25,17 +32,86 @@ export const AuthProvider = ({ children }) => {
         }
     }
 
+    let msgType = (c, txt) => {
+        switch (c) {
+            case "success":
+                return toast.success(txt, {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                });
+
+            case "error":
+                return toast.error(txt, {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                });
+            case "warning":
+                return (toast.warn(txt, {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                }));
+            
+            default:
+                return (toast(txt, {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                    })
+                    );
+
+        }
+    }
+
     let [authTokens, setAuthToken] = useState(() => getTokens());
     let [user, setUser] = useState(() => getUser());
     let [loading, setLoading] = useState(false);
 
 
+    let checkCredentials = (email, password) => {
+        const validRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+        if (email.match(validRegex) && password.length >= 6) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     let loginUser = async (e) => {
         e.preventDefault();
         try {
             setLoading(true);
-            let res = await fetch("https://eventmanagementsystem.pythonanywhere.com/login/", {
+            let email = e.target.email.value;
+            let password = e.target.password.value;
+            if (!checkCredentials(email, password)) {
+
+                return msgType("error", "Invalid credentials");
+
+            }
+
+            let res = await fetch(`${serverUrl}/login/`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -44,19 +120,26 @@ export const AuthProvider = ({ children }) => {
             });
 
             let data = await res.json()
+
+
             if (res.status === 200) {
                 setAuthToken(data);
                 setUser(jwt_decode(data.access));
                 localStorage.setItem('authTokens', JSON.stringify(data));
-                setLoading(false);
+                return msgType("success", "Logged In successfully");
+
 
 
             } else {
-                alert('Something went wrong')
+                return msgType("error", data.detail);
+
             }
         } catch (error) {
+
+            return <Navigate replace to = "/" />            ;
+
+        } finally {
             setLoading(false);
-            console.log(error);
         }
 
 
@@ -66,29 +149,9 @@ export const AuthProvider = ({ children }) => {
         setAuthToken(null)
         setUser(null)
         localStorage.removeItem('authTokens')
-        return <Navigate replace to="login/" />
+        return (msgType("success", "Logged Out successfully"), <Navigate replace to="login/" />)
     }
 
-    let upDateToken = async () => {
-        let res = await fetch("https://eventmanagementsystem.pythonanywhere.com/auth/jwt/refresh/", {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ 'refresh': authTokens.refresh })
-
-        });
-
-        let data = await res.json();
-
-        if (res.status === 200) {
-            setAuthToken(data);
-            setUser(jwt_decode(data.access));
-            localStorage.setItem('authTokens', JSON.stringify(data));
-        } else {
-            logout();
-        }
-    }
 
     let registerUser = async (e) => {
         e.preventDefault();
@@ -96,7 +159,20 @@ export const AuthProvider = ({ children }) => {
 
 
             setLoading(true);
-            let res = await fetch("https://eventmanagementsystem.pythonanywhere.com/auth/users/", {
+            let password = e.target.password.value;
+            let re_password = e.target.re_password.value;
+            let email = e.target.email.value;
+
+
+
+            if (!(checkCredentials(email, password))) {
+                return msgType("error", "Either email or password is invalid");
+            }
+            if (!(password === re_password)) {
+                return msgType("error", "Password and confirm password does not match");
+            }
+
+            let res = await fetch(`${serverUrl}/auth/users/`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -109,14 +185,19 @@ export const AuthProvider = ({ children }) => {
                 })
             });
 
+            
+
             let data = await res.json();
-            if (res.status === 200) {
-                console.log("User created");
-                console.log(data);
+            if (res.status === 201) {
+                return (msgType("success", `Registered Successfully check your ${email} inbox`),<Navigate replace to="login/" />);
+            } else {
+
+                return msgType("warning", data.detail);
             }
 
         } catch (error) {
-            console.log(error);
+
+            return msgType("error", "Something went wrong");
         } finally {
             setLoading(false);
         }
@@ -125,10 +206,48 @@ export const AuthProvider = ({ children }) => {
 
     }
 
+    // const verify = async (uid,token) => {
+    //     conso
+    //     const config = {
+    //         headers : {
+    //             'Content-type' : 'application/json',
+    //         }
+    //     };
+    //     const body = JSON.stringify({uid, token})
+    // } 
+
+    async function validateEmail(uid, token) {
+
+        try {
+            setLoading(true);
+            let res = fetch(`${serverUrl}/auth/users/activation/`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ uid, token })
+
+            });
+
+            if (res.status === 204 ) {
+                
+                return (msgType("success", "Email is successfully verified now you can login"),<Navigate replace to="login/" />);
+            } else {
+
+                return (msgType("error", "Something went wrong but check your email"),<Navigate replace to="login/" />);
+            }
+        } catch (error) {
+            return (msgType("error", "Something went wrong"),<Navigate replace to='/'/>);
+        } finally {
+            setLoading(false);
+        }
+
+    }
+
 
     // let getBlogs = async () => {
     //     try {
-    //         let res = await fetch("https://eventmanagementsystem.pythonanywhere.com/posts/",{
+    //         let res = await fetch("'https://eventmanagementsystem.pythonanywhere.com/'posts/",{
     //         method: "GET",
     //         headers: {
     //             'Content-Type': 'application/json',
@@ -150,15 +269,39 @@ export const AuthProvider = ({ children }) => {
 
     useEffect(() => {
 
-        let time = 1000 * 60 * 50
+        let time = 1000 * 60 * 50;
+        
         let interval = setInterval(() => {
             if (authTokens) {
+                let upDateToken = async () => {
+                    let res = await fetch("https://eventmanagementsystem.pythonanywhere.com/auth/jwt/refresh/", {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ 'refresh': authTokens.refresh })
+
+                    });
+
+                    let data = await res.json();
+
+                    if (res.status === 200) {
+                        setAuthToken(data);
+                        setUser(jwt_decode(data.access));
+                        localStorage.setItem('authTokens', JSON.stringify(data));
+                    } else {
+                        setAuthToken(null);
+                        setUser(null);
+                        localStorage.removeItem('authTokens');
+                    }
+                };
                 upDateToken();
+
             }
         }, time);
 
         return () => clearInterval(interval);
-    }, [authTokens, loading])
+    }, [authTokens, loading]);
 
     let contextData = {
         user: user,
@@ -166,6 +309,8 @@ export const AuthProvider = ({ children }) => {
         loginUser: loginUser,
         logout: logout,
         registerUser: registerUser,
+        validateEmail: validateEmail,
+
 
 
     }
