@@ -7,6 +7,7 @@ import { Register } from './pages/Register';
 import Validate from './pages/Validate';
 import Rhome from './pages/Rhome';
 import Blog from './pages/Blog';
+import { BlogDetail } from './pages/BlogDetail';
 
 function App() {
 
@@ -18,6 +19,7 @@ function App() {
         { path: '/register', element: <Register/> },
         { path: '/activate/:uid/:token/', element: <Validate/> },
         { path: '/posts', element: <Blog/> },
+        { path: '/posts/:slug/', element: <BlogDetail/>}
       ]
     },
     

@@ -1,24 +1,41 @@
-import React from 'react'
-import './posts.css'
+import React,{useEffect,useState} from 'react'
+import './utils.css'
+import BlogItem from './BlogItem';
 function Blog() {
+
+    let [posts,setPosts] = useState([]);
+    useEffect(() => {
+
+        async function getData(){
+            try{
+                let url = "https://eventmanagementsystem.pythonanywhere.com/getposts/";
+                let res =  await fetch(url,{
+                    method: "GET",
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                });
+                let data = await res.json();
+                setPosts(data);
+            }catch(error){
+                console.log(error);
+            }
+            
+        }
+
+        getData();
+        
+
+    },[]);
+
     return (
         <>
-            <div id='postContainer' className="container">
-                <div id='postCard' className="card dark">
-                    <img src="https://codingyaar.com/wp-content/uploads/chair-image.jpg" className="card-img-top" alt="..." />
-                    <div id='postCardBody' className="card-body">
-                        <div className="text-section">
-                            <h5 id='postTitle' className="card-title">Card title</h5>
-                            <p id='postText' className="card-text">Some quick example text to build on the card's
-                                content.</p>
-                        </div>
-                        <div className="cta-section">
-                            <div>$129.00</div>
-                            <a href="/" className="btn btn-light">Buy Now</a>
-                        </div>
-                    </div>
+            <section id='postSection' className="dark">
+                <div className="container py-4">
+                    <h1 className="h1 text-center" id="pageHeaderTitle" style={{color: "#fff"}}>My Posts</h1>
+                    <BlogItem posts={posts}/>
                 </div>
-            </div>
+            </section>
 
         </>
     )

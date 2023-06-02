@@ -206,15 +206,6 @@ export const AuthProvider = ({ children }) => {
 
     }
 
-    // const verify = async (uid,token) => {
-    //     conso
-    //     const config = {
-    //         headers : {
-    //             'Content-type' : 'application/json',
-    //         }
-    //     };
-    //     const body = JSON.stringify({uid, token})
-    // } 
 
     async function validateEmail(uid, token) {
 
@@ -245,27 +236,6 @@ export const AuthProvider = ({ children }) => {
     }
 
 
-    // let getBlogs = async () => {
-    //     try {
-    //         let res = await fetch("'https://eventmanagementsystem.pythonanywhere.com/'posts/",{
-    //         method: "GET",
-    //         headers: {
-    //             'Content-Type': 'application/json',
-    //         },
-
-    //         });
-
-    //         let data = res.json();
-    //         console.log(data);
-
-    //         console.log(res.status);
-    //     } catch (error) {
-    //         console.log(error)
-    //     }
-
-
-
-    // }
 
     useEffect(() => {
 
