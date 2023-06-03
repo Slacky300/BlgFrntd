@@ -20,9 +20,6 @@ export const AuthProvider = ({ children }) => {
         }
     }
 
-    let serverUrl = "https://eventmanagementsystem.pythonanywhere.com";
-    // let serverUrl = "http://127.0.0.1:8000";
-
     let getUser = () => {
         const token = localStorage.getItem('authTokens');
         if (token) {
@@ -111,7 +108,7 @@ export const AuthProvider = ({ children }) => {
 
             }
 
-            let res = await fetch(`${serverUrl}/login/`, {
+            let res = await fetch(`${process.env.REACT_APP_SERVER_URL}/api/login/`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -172,7 +169,7 @@ export const AuthProvider = ({ children }) => {
                 return msgType("error", "Password and confirm password does not match");
             }
 
-            let res = await fetch(`${serverUrl}/auth/users/`, {
+            let res = await fetch(`${process.env.REACT_APP_SERVER_URL}/auth/users/`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -211,7 +208,7 @@ export const AuthProvider = ({ children }) => {
 
         try {
             setLoading(true);
-            let res = fetch(`${serverUrl}/auth/users/activation/`, {
+            let res = fetch(`${process.env.REACT_APP_SERVER_URL}/auth/users/activation/`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -244,7 +241,7 @@ export const AuthProvider = ({ children }) => {
         let interval = setInterval(() => {
             if (authTokens) {
                 let upDateToken = async () => {
-                    let res = await fetch("https://eventmanagementsystem.pythonanywhere.com/auth/jwt/refresh/", {
+                    let res = await fetch(`${process.env.REACT_APP_SERVER_URL}/auth/jwt/refresh/`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
@@ -280,6 +277,7 @@ export const AuthProvider = ({ children }) => {
         logout: logout,
         registerUser: registerUser,
         validateEmail: validateEmail,
+        msgType: msgType,
 
 
 

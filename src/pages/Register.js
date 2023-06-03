@@ -1,7 +1,8 @@
-import React, { useState, useContext } from 'react'
+import React, { useContext } from 'react'
 import AuthContext from '../context/AuthContext';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Loading from '../components/Loading';
 export const Register = () => {
 
     let { loading, registerUser } = useContext(AuthContext);
@@ -69,7 +70,7 @@ export const Register = () => {
                                                 <div className="col-md-10 col-lg-6 col-xl-7 d-flex align-items-center order-1 order-lg-2">
 
                                                     <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-registration/draw1.webp"
-                                                        className="img-fluid" alt="Sample image" />
+                                                        className="img-fluid" alt="Sample" />
 
                                                 </div>
                                             </div>
@@ -82,11 +83,7 @@ export const Register = () => {
                 ) :
                 (
                     <>
-                        <div className="text-center">
-                            <div className="spinner-border" role="status">
-                                <span className="visually-hidden">Loading...</span>
-                            </div>
-                        </div>
+                        <Loading/>
                     </>
                 )}
 

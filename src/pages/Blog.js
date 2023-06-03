@@ -1,14 +1,17 @@
 import React,{useEffect,useState} from 'react'
-import './utils.css'
+import './css/utils.css'
 import BlogItem from './BlogItem';
+import Loading from '../components/Loading';
 function Blog() {
 
     let [posts,setPosts] = useState([]);
+    let [loading,setLoading] = useState(false);
     useEffect(() => {
 
         async function getData(){
             try{
-                let url = "https://eventmanagementsystem.pythonanywhere.com/getposts/";
+                setLoading(true);
+                let url = ` http://127.0.0.1:8000/api/posts/`;
                 let res =  await fetch(url,{
                     method: "GET",
                     headers: {
@@ -19,6 +22,8 @@ function Blog() {
                 setPosts(data);
             }catch(error){
                 console.log(error);
+            }finally{
+                setLoading(false);
             }
             
         }
@@ -30,12 +35,18 @@ function Blog() {
 
     return (
         <>
-            <section id='postSection' className="dark">
+            {!loading?(<section id='postSection' className="dark">
                 <div className="container py-4">
                     <h1 className="h1 text-center" id="pageHeaderTitle" style={{color: "#fff"}}>My Posts</h1>
                     <BlogItem posts={posts}/>
                 </div>
             </section>
+            ):(
+                <Loading/>
+            )
+
+            }
+            
 
         </>
     )
