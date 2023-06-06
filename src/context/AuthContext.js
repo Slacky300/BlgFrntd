@@ -146,7 +146,7 @@ export const AuthProvider = ({ children }) => {
         setAuthToken(null)
         setUser(null)
         localStorage.removeItem('authTokens')
-        return (msgType("success", "Logged Out successfully"), <Navigate replace to="login/" />)
+        return (msgType("success", "Logged Out successfully"))
     }
 
 

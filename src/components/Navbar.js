@@ -2,6 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { useContext } from 'react'
 import AuthContext from '../context/AuthContext'
+import './css/navbar.css'
 export const Navbar = () => {
 
     let { user, logout } = useContext(AuthContext)
@@ -9,7 +10,7 @@ export const Navbar = () => {
         <>
             <nav className="navbar navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">
                 <div className="container-fluid">
-                    <a className="navbar-brand" href="/">Absolutno</a>
+                    <a className="navbar-brand" href="/" id='logoName'>Absolutno</a>
                     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                         <span className="navbar-toggler-icon"></span>
                     </button>
@@ -33,10 +34,10 @@ export const Navbar = () => {
                             ) : (
                                 <>
                                     <li className="nav-item">
-                                        <Link className="nav-link" to="/about">About us</Link>
+                                        <Link className="nav-link" to="/posts">Blogs</Link>
                                     </li>
                                     <li className="nav-item">
-                                        <Link className="nav-link" to="/contact">Contact us</Link>
+                                        <Link className="nav-link" to="/about">About us</Link>
                                     </li>
                                     <li className='nav-item'>
                                         <Link className='nav-link' onClick={logout}>Logout</Link>

@@ -1,12 +1,30 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import AuthContext from '../context/AuthContext';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Loading from '../components/Loading';
+import { useNavigate } from "react-router-dom";
+import './css/login.css'
+import '../pages/css/utils.css'
+
 export const Register = () => {
 
-    let { loading, registerUser } = useContext(AuthContext);
+    let { loading, registerUser, user } = useContext(AuthContext);
+    const navigate = useNavigate()
+    useEffect(() => {
+        if (user) {
+            navigate('/');
+        }
+    }, [user, navigate]);
 
+    const showPassword = () => {
+        let checkbox = document.getElementById('chckbox')
+        if (checkbox.checked) {
+            document.getElementById('password').type = "text";
+        } else {
+            document.getElementById('password').type = "password";
+        }
+    }
 
     return (
         <>
@@ -14,76 +32,42 @@ export const Register = () => {
             {!loading ?
                 (
                     <>
-                        <div className="container my-5">
-                            <div className="row d-flex justify-content-center align-items-center">
-                                <div className="col-lg-12 col-xl-11">
-                                    <div className="card text-black" style={{ borderRadius: "25px" }}>
-                                        <div className="card-body p-md-5">
-                                            <div className="row justify-content-center">
-                                                <div className="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
+                        <form onSubmit={registerUser} className='my-5'>
+                            <div className="login-box container my-3">
+                                
+                                    <h1 className='fadeIn my-2'>Register</h1>
 
-                                                    <p className="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-3">Sign up</p>
-
-                                                    <form className="mx-1 mx-md-4" onSubmit={registerUser}>
-
-                                                        <div className="d-flex flex-row align-items-center mb-3">
-                                                            <i className="fas fa-user fa-lg me-3 fa-fw"></i>
-                                                            <div className="form-outline flex-fill mb-0">
-                                                                <input type="text" name='nameU' className="form-control" />
-                                                                <label className="form-label" htmlFor="form3Example1c">Your Name</label>
-                                                            </div>
-                                                        </div>
-
-                                                        <div className="d-flex flex-row align-items-center mb-3">
-                                                            <i className="fas fa-envelope fa-lg me-3 fa-fw"></i>
-                                                            <div className="form-outline flex-fill mb-0">
-                                                                <input type="email" name='email' className="form-control" />
-                                                                <label className="form-label" htmlFor="form3Example3c">Your Email</label>
-                                                            </div>
-                                                        </div>
-
-                                                        <div className="d-flex flex-row align-items-center mb-3">
-                                                            <i className="fas fa-lock fa-lg me-3 fa-fw"></i>
-                                                            <div className="form-outline flex-fill mb-0">
-                                                                <input type="password" name='password' className="form-control" />
-                                                                <label className="form-label" htmlFor="form3Example4c">Password</label>
-                                                            </div>
-                                                        </div>
-
-                                                        <div className="d-flex flex-row align-items-center mb-3">
-                                                            <i className="fas fa-key fa-lg me-3 fa-fw"></i>
-                                                            <div className="form-outline flex-fill mb-0">
-                                                                <input type="password" name='re_password' className="form-control" />
-                                                                <label className="form-label" htmlFor="form3Example4cd">Repeat your password</label>
-                                                            </div>
-                                                        </div>
-
-
-
-                                                        <div className="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
-                                                            <button type="submit" className="btn btn-dark btn-lg">Register</button>
-                                                        </div>
-
-                                                    </form>
-
-                                                </div>
-                                                <div className="col-md-10 col-lg-6 col-xl-7 d-flex align-items-center order-1 order-lg-2">
-
-                                                    <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-registration/draw1.webp"
-                                                        className="img-fluid" alt="Sample" />
-
-                                                </div>
-                                            </div>
-                                        </div>
+                                    <div className="textbox">
+                                        <i className="fas fa-user"></i>
+                                        <input type="text" name='nameU' placeholder="Your name" />
                                     </div>
-                                </div>
+
+                                    <div className="textbox">
+
+                                        <input type="email" name='email' placeholder="Your email" />
+                                    </div>
+
+                                    <div className="textbox">
+
+                                        <input type="password" name='password' id='password' placeholder="Your password" /> <span className='d-flex justify-content-end mt-2'><input onClick={showPassword} style={{ border: "2px solid white" }} id='chckbox' className='form-check-input' type='checkbox'></input></span>
+                                    </div>
+
+                                    <div className="textbox">
+
+                                        <input type="text" name='re_password' placeholder="Confirm password" />
+                                    </div>
+
+                                    <input type="submit" className="btn fadeIn" value="Sign up &#10147;" />
+                         
+
                             </div>
-                        </div>
+                        </form>
+
                     </>
                 ) :
                 (
                     <>
-                        <Loading/>
+                        <Loading />
                     </>
                 )}
 

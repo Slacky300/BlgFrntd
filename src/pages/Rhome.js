@@ -1,36 +1,77 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import './css/home.css'
+import { LatestPosts } from '../components/LatestPosts';
+import Loading from '../components/Loading';
+import '../pages/css/utils.css'
+
+
 
 function Rhome() {
-  return (
-    <>
-      <div className="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center bg-light">
-        <div className="col-md-5 p-lg-5 mx-auto my-5">
-          <h1 className="display-5 fw-normal">Absolutno</h1>
-          <p className="lead fw-normal">And an even wittier subheading to boot. Jumpstart your marketing efforts with this example based on Apple's marketing pages.</p>
-          <a className="btn btn-outline-secondary" href="/">Goto Blogs</a>
-        </div>
-        <div className="product-device box-shadow d-none d-md-block"></div>
-        <div className="product-device product-device-2 box-shadow d-none d-md-block"></div>
-      </div>
-      <div className="d-md-flex flex-md-equal w-100 my-md-3 pl-md-3">
-      <div className="bg-dark mr-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center text-white overflow-hidden">
-        <div className="my-3 py-3">
-          <h2 className="display-5">Another headline</h2>
-          <p className="lead">And an even wittier subheading.</p>
-        </div>
-        <div className="bg-light box-shadow mx-auto" style={{width: '80', height: '300px', borderRradius: '21px 21px 0 0'}}></div>
-      </div>
-      <div className="bg-light mr-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden">
-        <div className="my-3 p-3">
-          <h2 className="display-5">Another headline</h2>
-          <p className="lead">And an even wittier subheading.</p>
-        </div>
-        <div className="bg-dark box-shadow mx-auto" style={{width: '80', height: '300px', borderRradius: '21px 21px 0 0'}}></div>
-      </div>
-    </div>
-    </>
-  )
+
+    let [posts, setPosts] = useState([]);
+    let [loading, setLoading] = useState(false);
+
+    useEffect(() => {
+
+        async function getData() {
+            try {
+                setLoading(true);
+                let url = `${process.env.REACT_APP_SERVER_URL}/api/getlatesposts/`;
+                let res = await fetch(url, {
+                    method: "GET",
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                });
+                let data = await res.json();
+                setPosts(data);
+            } catch (error) {
+                console.log(error);
+            } finally {
+                setLoading(false);
+            }
+
+        }
+
+        getData();
+
+
+    }, []);
+
+    return (
+
+        <>
+            {!loading ? (
+                <>
+                    <div className='container my-5'>
+                        <div className='row pt-5 pb-2 d-flex justify-content-center align-items-center '>
+                            <h1 className='text-center text-uppercase fadeInDown'>Absolutno</h1><br />
+
+
+
+
+                            <span className='text-center fadeInDown'>The Absolute</span>
+                        </div>
+                        <hr></hr>
+                        <div className='row d-flex justify-content-center align-items-center my-5 mx-3' >
+                            <span className='h2 slideInLeft d-flex justify-content-start my-3'>Latest posts</span>
+                            <LatestPosts posts={posts} />
+                        </div>
+                    </div>
+
+
+
+
+
+                </>
+
+
+
+
+
+            ) : (<Loading />)}
+        </>
+    )
 }
 
 export default Rhome
