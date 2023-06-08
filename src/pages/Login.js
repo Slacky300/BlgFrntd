@@ -33,8 +33,8 @@ const Login = () => {
         <>
             {!loading ? (
                 <>
-                
-                    <form onSubmit={loginUser}>
+                <div className='row'>
+                <form onSubmit={loginUser}>
                         <div className="login-box">
                             <h1 className='fadeIn my-2'>Login</h1>
                             <div className="textbox">
@@ -51,6 +51,8 @@ const Login = () => {
                         </div>
                     </form>
 
+                </div>
+                   
                 </>
             ) : (
                 <>

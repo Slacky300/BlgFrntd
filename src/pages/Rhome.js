@@ -5,7 +5,6 @@ import Loading from '../components/Loading';
 import '../pages/css/utils.css'
 
 
-
 function Rhome() {
 
     let [posts, setPosts] = useState([]);
@@ -59,13 +58,13 @@ function Rhome() {
                         </div>
                     </div>
 
+      
 
-
-
-
+                    
+        
                 </>
 
-
+                
 
 
 

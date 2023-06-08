@@ -33,6 +33,9 @@ export const Navbar = () => {
 
                             ) : (
                                 <>
+                                    {user.email === "riyaz.211834101@vcet.edu.in"?(<li className="nav-item">
+                                        <Link className="nav-link" to="/admin_blog">Admin</Link>
+                                    </li>):(<></>)}
                                     <li className="nav-item">
                                         <Link className="nav-link" to="/posts">Blogs</Link>
                                     </li>

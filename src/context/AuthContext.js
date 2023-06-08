@@ -85,6 +85,8 @@ export const AuthProvider = ({ children }) => {
     let [authTokens, setAuthToken] = useState(() => getTokens());
     let [user, setUser] = useState(() => getUser());
     let [loading, setLoading] = useState(false);
+    let [verified,setVerified] = useState(false);
+
 
 
     let checkCredentials = (email, password) => {
@@ -218,7 +220,7 @@ export const AuthProvider = ({ children }) => {
             });
 
             if (res.status === 204 ) {
-                
+                setVerified(true);
                 return (msgType("success", "Email is successfully verified now you can login"),<Navigate replace to="login/" />);
             } else {
 
@@ -273,6 +275,7 @@ export const AuthProvider = ({ children }) => {
     let contextData = {
         user: user,
         loading: loading,
+        verified: verified,
         loginUser: loginUser,
         logout: logout,
         registerUser: registerUser,

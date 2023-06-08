@@ -1,10 +1,11 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import AuthContext from '../context/AuthContext';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 const Validate = () => {
 
-  let { validateEmail, loading } = useContext(AuthContext);
+  let { validateEmail, loading, verified } = useContext(AuthContext);
   const { uid, token } = useParams();
+  const navigate = useNavigate();
   const verify_account = (e) => {
 
 
@@ -12,6 +13,11 @@ const Validate = () => {
     validateEmail(uid, token);
 
   }
+  useEffect(()=>{
+    if(verified){
+      navigate('/login');
+    }
+  },[verified,navigate])
   if (!loading) {
     return (
       <>

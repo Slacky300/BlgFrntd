@@ -34,23 +34,23 @@ function BlogItem(props) {
                         </Link>
                         <div className="postcard__text">
                             {!user?
-                            (<Link to='/login'><h1 className="postcard__title blue">{posts.title}</h1></Link>):
-                            (<Link to={`${posts.slug}/`}><h1 className="postcard__title blue">{posts.title}</h1></Link>)}
+                            (<Link to='/login' style={{textDecoration: "none"}}><h1 className="postcard__title blue">{posts.title}</h1></Link>):
+                            (<Link to={`${posts.slug}/`} style={{textDecoration: "none"}}><h1 className="postcard__title blue">{posts.title}</h1></Link>)}
                             <div className="postcard__subtitle small">
                                 <time dateTime="2020-05-25 12:00:00">
-                                    <i className="fas fa-calendar-alt mr-2"></i>{withSlashes}
+                                    <i className="fas fa-calendar-alt mr-2"></i> {withSlashes}
                                 </time>
                             </div>
                             <div className="postcard__bar"></div>
                             <div className="postcard__preview-txt">{posts.desc.slice(0,150)}...</div>
                             <ul className="postcard__tagbox">
-                                <li className="tag__item"><i className="fas fa-tag mr-2"></i>{posts.likes} likes</li>
-                                <li className="tag__item"><i className="fas fa-clock mr-2"></i>{posts.noOfCmnts} comments</li>
+                                <li className="tag__item"><i className="far fa-thumbs-up mr-2"></i> {posts.likes.length} likes</li>
+                                <li className="tag__item"><i className="far fa-comments mr-2"></i> {posts.noOfCmnts} comments</li>
 
                                 <li className="tag__item play blue">
                                     {!user?(
-                                        <Link to="/login"><i className=' className="fas fa-play mr-2" '>View</i></Link>
-                                    ):(<Link to={`${posts.slug}/`}><i className="fas fa-play mr-2"></i>View</Link>)}
+                                        <Link to="/login" style={{textDecoration: "none"}}><i className='fas fa-eye mr-2'> View</i></Link>
+                                    ):(<Link to={`${posts.slug}/`} style={{textDecoration: "none"}}><i className="fas fa-eye mr-2"></i> View</Link>)}
                                     
                                 </li>
                             </ul>
